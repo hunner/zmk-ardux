@@ -208,10 +208,39 @@
 #define LAYER_ID_SYMBOLS 2
 #define LAYER_ID_PARENTHETICALS 3
 #define LAYER_ID_NAVIGATION 4
-#define LAYER_ID_BT_SEL 5
-#define LAYER_ID_CUSTOM 6
-#define LAYER_ID_BIG_SYM 7
-#define LAYER_ID_BIG_FUNCTION 8
+#define LAYER_ID_MOUSE 5
+#define LAYER_ID_BT_SEL 6
+#define LAYER_ID_CUSTOM 7
+#define LAYER_ID_BIG_SYM 8
+#define LAYER_ID_BIG_FUNCTION 9
+
+/*****************************************
+ * Mouse keys using PR #7something
+ *****************************************/
+
+#include <dt-bindings/zmk/mouse.h>
+
+&mmv {
+  time-to-max-speed-ms = <80>;
+  acceleration-exponent = <2>;
+  delay-ms = <0>;
+};
+
+&mwh {
+  time-to-max-speed-ms = <80>;
+  acceleration-exponent = <0>;
+  delay-ms = <10>;
+};
+
+#define U_MOUSE_MOVE_MAX 600
+#define U_MOUSE_SCROLL_MAX 15
+#define MOVE_UP MOVE_VERT(-U_MOUSE_MOVE_MAX)
+#define MOVE_DOWN MOVE_VERT(U_MOUSE_MOVE_MAX)
+#define MOVE_LEFT MOVE_HOR(-U_MOUSE_MOVE_MAX)
+#define MOVE_RIGHT MOVE_HOR(U_MOUSE_MOVE_MAX)
+#define SCROLL_UP SCROLL_VERT(U_MOUSE_SCROLL_MAX)
+#define SCROLL_DOWN SCROLL_VERT(-U_MOUSE_SCROLL_MAX)
+
 
 /*****************************************
  * Standard ARDUX combo definitions
@@ -261,6 +290,7 @@
 		 *****************************************/
 		combo_esc              { timeout-ms = <TIMEOUT_COMBO_3>; key-positions = <KEY_A KEY_R KEY_O>; bindings = <&kp ESC>; };
 		combo_layer_navigation { timeout-ms = <TIMEOUT_COMBO_3>; key-positions = <KEY_R KEY_E KEY_I>; bindings = <&tog LAYER_ID_NAVIGATION>; };
+    combo_layer_mouse      { timeout-ms = <TIMEOUT_COMBO_3>; key-positions = <KEY_A KEY_T KEY_Y>; bindings = <&tog LAYER_ID_MOUSE>; };
 
 		combo_m            { layers = <LAYER_ID_BASE>; timeout-ms = <TIMEOUT_COMBO_3>; key-positions = <KEY_Y KEY_I KEY_O>; bindings = <&kp M>; };
 		combo_d            { layers = <LAYER_ID_BASE>; timeout-ms = <TIMEOUT_COMBO_3>; key-positions = <KEY_A KEY_R KEY_T>; bindings = <&kp D>; };
@@ -389,6 +419,16 @@
 				TRAILING_NONES
 			>;
 		};
+    mouse {
+      label = "Mouse";
+      bindings = <
+        LEADING_NONES
+        &mkp RCLK                                           &mmv MOVE_UP  &mkp LCLK &mwh SCROLL_UP
+        MIDDLE_NONES
+        &mmv MOVE_RIGHT                                     &mmv MOVE_DOWN &mmv MOVE_LEFT &mwh SCROLL_DOWN
+        TRAILING_NONES
+      >;
+    };
 		bt {
 			label = "BT";
 			bindings = <
@@ -512,6 +552,16 @@
 				TRAILING_NONES
 			>;
 		};
+    mouse {
+      label = "Mouse";
+      bindings = <
+        LEADING_NONES
+        &mwh SCROLL_UP                              &mkp RCLK  &mmv MOVE_UP  &mkp LCLK
+        MIDDLE_NONES
+        &mwh SCROLL_DOWN                            &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_RIGHT
+        TRAILING_NONES
+      >;
+    };
 		bt {
 			label = "BT";
 			bindings = <
